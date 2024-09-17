@@ -24,6 +24,7 @@ module.exports = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    res.status(401).json({ message: error.message });
+    console.log("Erreur de vérification du token :", error.message);
+    res.status(401).json({ message: "Token invalide" });
   }
 };
