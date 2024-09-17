@@ -10,6 +10,7 @@ async function getConcessionDetails(id) {
   return Concession.findById(id, {
     name: 1,
     location: 1,
+    operator: 1,
     geologicalData: 1,
     infrastructure: 1,
   });
