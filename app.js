@@ -1,21 +1,15 @@
 const express = require("express");
-const cors = require("cors");
+const corsConfig = require("./config/corsConfig");
+//const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const routes = require("./routes");
+const errorMiddleware = require("./middlewares/errorMiddleware");
 
 const app = express();
 
-// Cors option
-const corsOptions = {
-  origin: ["http://localhost:8080", "https://hydro-contract.vercel.app"],
-  optionsSuccessStatus: 200,
-  methods: "GET,POST,PUT,PATCH,DELETE,OPTIONS",
-  allowedHeaders: "Content-Type,Authorization",
-};
-
 // Middleware
-app.use(cors(corsOptions));
+app.use(corsConfig);
 app.use(helmet());
 app.use(morgan("combined"));
 app.use(express.json());
@@ -31,5 +25,8 @@ app.get("/api", (req, res) => {
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Bienvenue sur l'api PetroMap RDC" });
 });
+
+// Middleware pour la gestion des erreurs
+app.use(errorMiddleware);
 
 module.exports = app;
