@@ -4,7 +4,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const routes = require("./routes");
 const errorMiddleware = require("./middlewares/errorMiddleware");
-const socketIO = require("socket.io");
+const initSocket = require("./config/socketConfig");
 const http = require("http");
 
 const app = express();
@@ -32,22 +32,8 @@ app.use(errorMiddleware);
 
 // Serveur HTTP et Socket.IO
 const server = http.createServer(app);
-const io = socketIO(server, {
-  cors: {
-    origin: "http://localhost:8080", // URL Frontend
-    methods: ["GET", "POST"],
-  },
-});
 
-// Configuration de Socket.IO
-io.on("connection", (socket) => {
-  console.log("Un utilisateur est connecté");
-
-  socket.on("disconnect", () => {
-    console.log("Un utilisateur s'est déconnecté");
-  });
-
-  // Ajoutez ici des écouteurs d'événements personnalisés
-});
+// Initialiser Socket.IO
+initSocket(server);
 
 module.exports = { app, server };
