@@ -1,10 +1,11 @@
 const express = require("express");
 const corsConfig = require("./config/corsConfig");
-//const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const routes = require("./routes");
 const errorMiddleware = require("./middlewares/errorMiddleware");
+const socketIO = require("socket.io");
+const http = require("http");
 
 const app = express();
 
@@ -29,4 +30,24 @@ app.get("/", (req, res) => {
 // Middleware pour la gestion des erreurs
 app.use(errorMiddleware);
 
-module.exports = app;
+// Serveur HTTP et Socket.IO
+const server = http.createServer(app);
+const io = socketIO(server, {
+  cors: {
+    origin: "http://localhost:8080", // URL Frontend
+    methods: ["GET", "POST"],
+  },
+});
+
+// Configuration de Socket.IO
+io.on("connection", (socket) => {
+  console.log("Un utilisateur est connecté");
+
+  socket.on("disconnect", () => {
+    console.log("Un utilisateur s'est déconnecté");
+  });
+
+  // Ajoutez ici des écouteurs d'événements personnalisés
+});
+
+module.exports = { app, server };
