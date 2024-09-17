@@ -3,8 +3,10 @@ const socketIO = require("socket.io");
 const initSocket = (server) => {
   const io = socketIO(server, {
     cors: {
-      origin: "http://localhost:8080", // Adresse du frontend
+      origin: "*",
       methods: ["GET", "POST"],
+      allowedHeaders: ["Content-Type", "Authorization"],
+      credentials: true,
     },
   });
 

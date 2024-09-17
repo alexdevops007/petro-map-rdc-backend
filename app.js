@@ -19,6 +19,11 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use("/api", routes);
 
+app.use("/proxy", (req, res) => {
+  const url = "https://petro-map-rdc-backend.vercel.app" + req.url;
+  req.pipe(request({ qs: req.query, uri: url })).pipe(res);
+});
+
 app.get("/api", (req, res) => {
   res.status(200).json({ message: "Bienvenue sur l'api PetroMap RDC" });
 });
