@@ -13,12 +13,17 @@ const initSocket = (server) => {
   io.on("connection", (socket) => {
     console.log("Un utilisateur est connecté à Socket.IO");
 
+    // Gestion des alertes
+    socket.on("newAlert", (data) => {
+      console.log("Nouvelle alerte reçue :", data);
+      io.emit("alertNotification", data); // Diffuse l'alerte à tous les utilisateurs
+    });
+
     socket.on("disconnect", () => {
       console.log("Un utilisateur s'est déconnecté");
     });
-
-    // Ajouter des événements personnalisés ici si nécessaire
   });
+
 
   return io;
 };
