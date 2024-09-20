@@ -4,7 +4,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const routes = require("./routes");
 const errorMiddleware = require("./middlewares/errorMiddleware");
-const initSocket = require("./config/socketConfig");
+const { initSocket } = require("./config/socketConfig");
 const http = require("http");
 
 const app = express();
@@ -39,6 +39,6 @@ app.use(errorMiddleware);
 const server = http.createServer(app);
 
 // Initialiser Socket.IO
-initSocket(server);
+const io = initSocket(server);
 
-module.exports = { app, server };
+module.exports = { app, server, io };

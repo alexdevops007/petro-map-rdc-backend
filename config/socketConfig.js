@@ -16,7 +16,7 @@ const initSocket = (server) => {
     // Gestion des alertes
     socket.on("newAlert", (data) => {
       console.log("Nouvelle alerte reçue :", data);
-      io.emit("alertNotification", data); 
+      io.emit("alertNotification", data);
     });
 
     socket.on("disconnect", () => {
@@ -27,4 +27,8 @@ const initSocket = (server) => {
   return io;
 };
 
-module.exports = initSocket;
+const notifyNewActivity = (io, activity) => {
+  io.emit("newActivity", activity);
+};
+
+module.exports = { initSocket, notifyNewActivity };

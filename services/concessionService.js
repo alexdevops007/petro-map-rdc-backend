@@ -1,5 +1,6 @@
 const Concession = require("../models/Concession");
 const NotificationService = require("./notificationService");
+const ActivityService = require("./activityService");
 
 // Créer une nouvelle concession
 async function createConcession(data) {
@@ -10,6 +11,13 @@ async function createConcession(data) {
   await NotificationService.createNotification({
     message: `La concession ${concession.name} a été créée.`,
     type: "Création de concession",
+  });
+
+  // Enregistrer une activité liée à la création de la concession
+  await ActivityService.createActivity({
+    concessionId: concession._id,
+    message: `La concession ${concession.name} a été créée.`,
+    type: "Création",
   });
 
   return concession;
@@ -40,6 +48,13 @@ async function updateConcession(id, updateData) {
     type: "Mise à jour de concession",
   });
 
+  // Enregistrer une activité liée à la mise à jour de la concession
+  await ActivityService.createActivity({
+    concessionId: concession._id,
+    message: `La concession ${concession.name} a été mise à jour.`,
+    type: "Mise à jour",
+  });
+
   return concession;
 }
 
@@ -54,6 +69,13 @@ async function deleteConcession(id) {
   await NotificationService.createNotification({
     message: `La concession ${concession.name} a été supprimée.`,
     type: "Suppression de concession",
+  });
+
+  // Enregistrer une activité liée à la suppression de la concession
+  await ActivityService.createActivity({
+    concessionId: concession._id,
+    message: `La concession ${concession.name} a été supprimée.`,
+    type: "Suppression",
   });
 
   return concession;
