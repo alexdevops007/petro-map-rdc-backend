@@ -16,14 +16,13 @@ const initSocket = (server) => {
     // Gestion des alertes
     socket.on("newAlert", (data) => {
       console.log("Nouvelle alerte reçue :", data);
-      io.emit("alertNotification", data); // Diffuse l'alerte à tous les utilisateurs
+      io.emit("alertNotification", data); 
     });
 
     socket.on("disconnect", () => {
       console.log("Un utilisateur s'est déconnecté");
     });
   });
-
 
   return io;
 };
